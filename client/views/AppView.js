@@ -1,4 +1,5 @@
 // AppView.js - Defines a backbone view class for the whole music app.
+// App view is a container for all the other views
 var AppView = Backbone.View.extend({
 
   initialize: function(params){
@@ -16,6 +17,9 @@ var AppView = Backbone.View.extend({
     }, this);
 
     this.model.get('songQueue').bind('remove', function(model){
+      if (this.model.get('songQueue').length === 0){
+        this.playerView.pauseSong();
+      }
       this.songQueueView.render();
     }, this);
 
