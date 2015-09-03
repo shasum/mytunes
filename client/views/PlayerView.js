@@ -16,7 +16,6 @@ var PlayerView = Backbone.View.extend({
   },
 
   stop: function(){
-    //this.$el.trigger('pause');
     this.model = null;
     this.render();
   },
