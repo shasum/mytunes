@@ -14,15 +14,22 @@ var AppView = Backbone.View.extend({
     //collection need .bind to listen to different events
     this.model.get('songQueue').bind('add', function(model){
       this.songQueueView.render();
+      if (this.model.get('songQueue').length === 1) {
+        this.model.get('songQueue').playFirst();
+      }
     }, this);
 
     this.model.get('songQueue').bind('remove', function(model){
-      if (this.model.get('songQueue').length === 0){
-        this.playerView.pauseSong();
-      }
       this.songQueueView.render();
+      if (this.model.get('songQueue').length === 0){
+        this.playerView.stop();
+        this.model.set('currentSong', null);
+      } else {
+        if (!this.model.get('songQueue').contains(this.model.get('currentSong'))) {
+          this.model.get('songQueue').playFirst();
+        }
+      }
     }, this);
-
   },
 
   render: function(){
