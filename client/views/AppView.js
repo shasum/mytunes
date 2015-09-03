@@ -6,17 +6,19 @@ var AppView = Backbone.View.extend({
     this.libraryView = new LibraryView({collection: this.model.get('library')});
     this.songQueueView = new SongQueueView({collection: this.model.get('songQueue')});
 
-    // change:currentSong - this is Backbone's way of allowing you to filter events to
-    // ONLY receive change events for the specific property, 'currentSong'
     this.model.on('change:currentSong', function(model){
       this.playerView.setSong(model.get('currentSong'));
     }, this);
 
-    //change event isn't fired for model add to collection,
-    //guess that bind is needed to trap the add event
+    //collection need .bind to listen to different events
     this.model.get('songQueue').bind('add', function(model){
       this.songQueueView.render();
     }, this);
+
+    this.model.get('songQueue').bind('remove', function(model){
+      this.songQueueView.render();
+    }, this);
+
   },
 
   render: function(){
